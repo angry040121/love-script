@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>你的理想恋爱剧本</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap">
+<style>
+:root{
+  --bg:#f3f0f8; --paper:#faf8fc; --card:#ffffff;
+  --ink:#2d2a35; --soft:#5f5a6c; --faint:#9c94ad;
+  --violet:#9a8fc9; --violet-deep:#6f63a0; --violet-soft:#ece3f3;
+  --pink:#c98fb0; --pink-soft:#f6e8f0;
+  --line:#e7dfee; --radius:24px; --shadow:0 12px 34px rgba(100,80,140,.14);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{
+  font-family:"Noto Sans SC",-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:
+    radial-gradient(1100px 680px at 85% -10%, rgba(201,143,176,.16), transparent 60%),
+    radial-gradient(900px 600px at -10% 110%, rgba(154,143,201,.16), transparent 55%),
+    var(--bg);
+  color:var(--ink); min-height:100vh; line-height:1.6;
+}
+.wrap{max-width:640px;margin:0 auto;padding:0 18px;}
+.view{display:none;animation:fadeIn .45s ease both;}
+.view.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+#home{min-height:100vh;padding:40px 0;}
+#home.active{display:flex;flex-direction:column;justify-content:center;}
+.hero{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:42px 30px 34px;position:relative;overflow:hidden;}
+.hero .blob{position:absolute;width:180px;height:180px;border-radius:50%;filter:blur(10px);opacity:.5;}
+.hero .blob.b1{background:var(--violet-soft);top:-60px;right:-50px;}
+.hero .blob.b2{background:var(--pink-soft);bottom:-70px;left:-60px;}
+.hero .inner{position:relative;}
+.hero .kicker{letter-spacing:.3em;font-size:12px;color:var(--violet-deep);margin-bottom:18px;}
+.hero h1{font-weight:900;font-size:30px;line-height:1.4;margin-bottom:16px;}
+.hero h1 .hl{color:var(--violet-deep);}
+.hero p.desc{color:var(--soft);font-size:15px;margin-bottom:26px;}
+.tag-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:30px;}
+.tag{font-size:13px;color:var(--violet-deep);background:var(--violet-soft);border-radius:999px;padding:6px 14px;}
+.meta-row{display:flex;gap:18px;padding:16px 0 26px;border-top:1px dashed var(--line);}
+.meta-row .m{flex:1;text-align:center;}
+.meta-row .m b{display:block;font-size:22px;color:var(--violet-deep);}
+.meta-row .m span{font-size:12px;color:var(--faint);}
+.btn{display:block;width:100%;border:none;cursor:pointer;font-family:inherit;font-size:17px;font-weight:700;letter-spacing:.14em;color:#fff;background:linear-gradient(135deg,var(--violet),var(--violet-deep));padding:17px 20px;border-radius:18px;box-shadow:0 12px 24px rgba(111,99,160,.3);transition:transform .18s ease,box-shadow .18s ease;}
+.btn:active{transform:translateY(2px);}
+.btn.ghost{background:transparent;color:var(--violet-deep);border:1.5px solid var(--violet);box-shadow:none;margin-top:14px;}
+.disclaimer{margin-top:22px;text-align:center;font-size:12px;color:var(--faint);}
+
+#quiz{padding:28px 0 40px;}
+.quiz-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+.quiz-head .step{font-size:14px;color:var(--soft);white-space:nowrap;font-weight:500;}
+.progress{flex:1;height:9px;background:#eae3f0;border-radius:999px;overflow:hidden;}
+.progress i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--pink),var(--violet));transition:width .4s ease;}
+.q-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:30px 24px 24px;margin-top:10px;}
+.q-index{font-size:12px;letter-spacing:.25em;color:var(--pink);margin-bottom:12px;}
+.q-title{font-size:21px;font-weight:700;line-height:1.55;margin-bottom:24px;}
+.opts{display:flex;flex-direction:column;gap:14px;}
+.opt{display:flex;gap:14px;align-items:flex-start;cursor:pointer;border:1.5px solid var(--line);border-radius:18px;padding:16px;background:var(--paper);transition:all .18s ease;}
+.opt:hover{border-color:var(--violet);}
+.opt .badge{flex:0 0 30px;height:30px;border-radius:10px;background:#eee7f1;color:var(--soft);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;}
+.opt .txt{font-size:15.5px;color:var(--ink);}
+.opt.selected{border-color:var(--violet);background:var(--violet-soft);}
+.opt.selected .badge{background:var(--violet);color:#fff;}
+.quiz-foot{display:flex;gap:12px;margin-top:22px;}
+.quiz-foot .btn{flex:1;}
+.btn-back{flex:0 0 48px;border:1.5px solid var(--line);background:var(--card);border-radius:18px;color:var(--soft);font-size:18px;cursor:pointer;}
+.q-card.enter{animation:qIn .38s ease both;}
+@keyframes qIn{from{opacity:0;transform:translateX(26px);}to{opacity:1;transform:translateX(0);}}
+
+#result{padding:30px 0 50px;}
+.result-card{background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow);overflow:hidden;}
+.result-banner{padding:40px 26px 30px;text-align:center;color:#fff;}
+.result-banner .r-kicker{letter-spacing:.28em;font-size:12px;opacity:.9;margin-bottom:14px;}
+.result-banner .r-avatar{width:84px;height:84px;margin:0 auto 16px;border-radius:28px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900;}
+.result-banner .r-name{font-size:28px;font-weight:900;letter-spacing:.06em;}
+.result-banner .r-cat{margin-top:8px;font-size:14px;opacity:.92;}
+.r-quote{margin:0 26px;padding:22px 20px;background:var(--pink-soft);border-left:3px solid var(--pink);border-radius:0 16px 16px 0;font-size:17px;font-weight:500;color:var(--ink);margin-top:24px;}
+.r-body{padding:26px 26px 10px;}
+.r-block{margin-bottom:24px;}
+.r-block h3{font-size:16px;color:var(--violet-deep);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.r-block h3::before{content:"";width:8px;height:8px;background:var(--pink);border-radius:3px;transform:rotate(45deg);}
+.r-block p{font-size:15px;color:var(--soft);}
+.trait-list{display:flex;flex-wrap:wrap;gap:10px;}
+.trait-list span{background:var(--violet-soft);color:var(--violet-deep);border-radius:999px;padding:7px 14px;font-size:13.5px;}
+.egg{background:var(--paper);border:1px dashed var(--pink);border-radius:16px;padding:16px 18px;font-size:14px;color:var(--pink);}
+.bars{display:flex;flex-direction:column;gap:12px;}
+.bar-row{display:flex;align-items:center;gap:12px;}
+.bar-row .bl{flex:0 0 70px;font-size:13px;color:var(--soft);}
+.bar-row .bt{flex:1;height:9px;background:#ece5f0;border-radius:999px;overflow:hidden;}
+.bar-row .bt i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--pink),var(--violet));}
+.bar-row .bv{flex:0 0 30px;text-align:right;font-size:12px;color:var(--faint);}
+.r-note{font-size:12px;color:var(--faint);margin-top:8px;}
+.result-actions{padding:0 26px 30px;}
+.share-tip{text-align:center;font-size:12px;color:var(--faint);margin:18px 0 0;}
+
+@media (max-width:480px){
+  .hero{padding:32px 22px 26px;}
+  .hero h1{font-size:25px;}
+  .q-card{padding:24px 18px 18px;}
+  .q-title{font-size:19px;}
+  .result-banner .r-name{font-size:24px;}
+  .r-body{padding:22px 20px 8px;}
+  .result-actions{padding:0 20px 26px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <section id="home" class="view active">
+    <div class="hero">
+      <div class="blob b1"></div><div class="blob b2"></div>
+      <div class="inner">
+        <div class="kicker">恋 爱 剧 本 向 往 测 算</div>
+        <h1>你的理想<br><span class="hl">恋爱剧本</span></h1>
+        <p class="desc">从向往的开场、约会方式、相处节奏、冲突和解到未来想象，看看你骨子里最想要一段怎样的恋爱故事。</p>
+        <div class="tag-row">
+          <span class="tag">青梅竹马</span><span class="tag">双向奔赴</span><span class="tag">欢喜冤家</span>
+          <span class="tag">细水长流</span><span class="tag">浪漫童话</span><span class="tag">并肩打拼</span><span class="tag">灵魂伴侣</span>
+        </div>
+        <div class="meta-row">
+          <div class="m"><b>40</b><span>道情境选择题</span></div>
+          <div class="m"><b>7</b><span>类恋爱剧本</span></div>
+          <div class="m"><b>3</b><span>分钟左右</span></div>
+        </div>
+        <button type="button" class="btn" onclick="startQuiz()">开 始 测 试</button>
+        <p class="disclaimer">本测试为趣味恋爱想象，不代表真实择偶标准，不构成心理诊断或婚恋建议。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="quiz" class="view">
+    <div class="quiz-head">
+      <span class="step" id="stepText">1 / 40</span>
+      <div class="progress"><i id="barFill"></i></div>
+    </div>
+    <div class="q-card" id="qCard">
+      <div class="q-index" id="qIndex">第 1 题</div>
+      <div class="q-title" id="qTitle"></div>
+      <div class="opts" id="opts"></div>
+    </div>
+    <div class="quiz-foot">
+      <button type="button" class="btn-back" id="btnBack" onclick="prevQ()">←</button>
+      <button type="button" class="btn" id="btnNext" onclick="nextQ()">下一题</button>
+    </div>
+  </section>
+
+  <section id="result" class="view">
+    <div class="result-card" id="resultCard"></div>
+    <div class="result-actions">
+      <button type="button" class="btn ghost" onclick="restart()">再 测 一 次</button>
+      <p class="share-tip">截图保存本页，看看你的理想恋爱剧本。</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+const DIMS = {
+  childhood:{label:"青梅竹马"},
+  pursue:  {label:"双向奔赴"},
+  bicker:  {label:"欢喜冤家"},
+  stream:  {label:"细水长流"},
+  fairy:   {label:"浪漫童话"},
+  partner: {label:"并肩打拼"},
+  soulmate:{label:"灵魂伴侣"}
+};
+
+const QUESTIONS = [
+  {q:"你最向往的恋爱开场是？", options:[
+    {t:"认识多年、从朋友慢慢变恋人", d:"childhood"},
+    {t:"互相主动、彼此热烈追求", d:"pursue"},
+    {t:"不打不相识、越吵越有感觉", d:"bicker"},
+    {t:"日常相处里慢慢生出感情", d:"stream"}
+  ]},
+  {q:"理想约会更像？", options:[
+    {t:"布置用心、氛围梦幻动人", d:"fairy"},
+    {t:"一起忙事情、在打拼中约会", d:"partner"},
+    {t:"聊到深夜、精神上很合拍", d:"soulmate"},
+    {t:"重温旧地、像老朋友一样自在", d:"childhood"}
+  ]},
+  {q:"你期待的相处节奏是？", options:[
+    {t:"双向主动、感情快速升温", d:"pursue"},
+    {t:"斗嘴拌架、气氛热闹有趣", d:"bicker"},
+    {t:"安稳舒缓、日子细水长流", d:"stream"},
+    {t:"梦幻甜蜜、处处是心动", d:"fairy"}
+  ]},
+  {q:"两个人闹矛盾后，你想象中通常？", options:[
+    {t:"一起规划现实、把问题解决掉", d:"partner"},
+    {t:"深谈一次、彼此更懂对方", d:"soulmate"},
+    {t:"念着旧情、舍不得真生气", d:"childhood"},
+    {t:"吵完互相服软、又和好如初", d:"pursue"}
+  ]},
+  {q:"你想象中的热恋状态？", options:[
+    {t:"嘴上互怼、心里都很在意", d:"bicker"},
+    {t:"平淡陪伴、温情不断", d:"stream"},
+    {t:"童话般浪漫、被宠成主角", d:"fairy"},
+    {t:"并肩向前、一起变更好", d:"partner"}
+  ]},
+  {q:"你更看重恋爱里的什么？", options:[
+    {t:"灵魂共鸣、被真正懂得", d:"soulmate"},
+    {t:"知根知底、长久信任", d:"childhood"},
+    {t:"彼此奔赴、都愿意付出", d:"pursue"},
+    {t:"相处有趣、不闷不无聊", d:"bicker"}
+  ]},
+  {q:"你理想的日常陪伴是？", options:[
+    {t:"一起做饭收拾、经营小家", d:"stream"},
+    {t:"制造惊喜和仪式感", d:"fairy"},
+    {t:"互相扶持、追逐各自目标", d:"partner"},
+    {t:"聊心事、分享内心世界", d:"soulmate"}
+  ]},
+  {q:"你向往的告白方式是？", options:[
+    {t:"多年后认真说出藏了很久的心意", d:"childhood"},
+    {t:"双向奔赴、当面把话说开", d:"pursue"},
+    {t:"斗嘴斗出来的一句真心话", d:"bicker"},
+    {t:"温柔陪伴里水到渠成的确定", d:"stream"}
+  ]},
+  {q:"你对浪漫惊喜的期待？", options:[
+    {t:"梦幻隆重、像电影桥段", d:"fairy"},
+    {t:"实用贴心、为生活分担", d:"partner"},
+    {t:"懂我所想、无需多言", d:"soulmate"},
+    {t:"老友式的默契小惊喜", d:"childhood"}
+  ]},
+  {q:"你想象中的两个人未来？", options:[
+    {t:"热烈相爱、一直双向奔赴", d:"pursue"},
+    {t:"吵不散、越拌嘴越亲近", d:"bicker"},
+    {t:"细水长流、安稳过日子", d:"stream"},
+    {t:"童话结局、幸福甜蜜到底", d:"fairy"}
+  ]},
+  {q:"你在关系里更像哪种角色？", options:[
+    {t:"和对方一起打拼成长的搭档", d:"partner"},
+    {t:"懂对方内心世界的知己", d:"soulmate"},
+    {t:"青梅竹马、一路同行的旧识", d:"childhood"},
+    {t:"主动追爱、热情奔赴的人", d:"pursue"}
+  ]},
+  {q:"你最吃哪段恋爱剧情？", options:[
+    {t:"欢喜冤家、不打不成交", d:"bicker"},
+    {t:"老夫老妻式的温情日常", d:"stream"},
+    {t:"王子公主般的浪漫童话", d:"fairy"},
+    {t:"事业爱情双丰收的并肩故事", d:"partner"}
+  ]},
+  {q:"你希望感情怎么升温？", options:[
+    {t:"精神共鸣、越聊越投缘", d:"soulmate"},
+    {t:"从小一起长大、水到渠成", d:"childhood"},
+    {t:"你进一步我进一步、彼此主动", d:"pursue"},
+    {t:"互相怼着怼着生出喜欢", d:"bicker"}
+  ]},
+  {q:"你偏爱的相处氛围？", options:[
+    {t:"安稳家常、舒服自在", d:"stream"},
+    {t:"浪漫梦幻、被氛围包裹", d:"fairy"},
+    {t:"励志向上、一起往前走", d:"partner"},
+    {t:"安静默契、不必多说", d:"soulmate"}
+  ]},
+  {q:"你理想中的共同爱好？", options:[
+    {t:"从小玩到大的旧习惯", d:"childhood"},
+    {t:"一起参加热闹有趣的活动", d:"pursue"},
+    {t:"互相抬杠、比拼斗嘴", d:"bicker"},
+    {t:"居家休闲、平淡却温馨", d:"stream"}
+  ]},
+  {q:"你对纪念日的想象？", options:[
+    {t:"隆重用心、充满浪漫感", d:"fairy"},
+    {t:"一起回顾走过的路、互相鼓励", d:"partner"},
+    {t:"记得彼此内心最重要的事", d:"soulmate"},
+    {t:"像过了很多年一样自然熟络", d:"childhood"}
+  ]},
+  {q:"你期待对方怎么宠你？", options:[
+    {t:"热情主动、把偏爱说出来", d:"pursue"},
+    {t:"嘴上不饶人、行动却很护短", d:"bicker"},
+    {t:"默默照顾日常、细水长流", d:"stream"},
+    {t:"安排浪漫惊喜、给足仪式感", d:"fairy"}
+  ]},
+  {q:"你想象的吵架和好方式？", options:[
+    {t:"一起把现实问题摊开解决", d:"partner"},
+    {t:"深谈心结、彼此更理解", d:"soulmate"},
+    {t:"念着旧情、先软下来", d:"childhood"},
+    {t:"闹完主动递台阶、继续热闹", d:"pursue"}
+  ]},
+  {q:"你更向往哪种认识方式？", options:[
+    {t:"邻里同窗、很早就认识", d:"childhood"},
+    {t:"旅行聚会、一见钟情式相遇", d:"fairy"},
+    {t:"工作项目里并肩合作", d:"partner"},
+    {t:"深聊投缘、一见如故", d:"soulmate"}
+  ]},
+  {q:"你理想中的恋爱时长感？", options:[
+    {t:"越久越亲、吵不散的那种", d:"bicker"},
+    {t:"长久安稳、陪伴到老", d:"stream"},
+    {t:"热烈新鲜、一直有心动", d:"pursue"},
+    {t:"灵魂相守、不分长短", d:"soulmate"}
+  ]},
+  {q:"你希望关系里有什么默契？", options:[
+    {t:"从小养成的老习惯默契", d:"childhood"},
+    {t:"彼此都主动、不用猜谁先低头", d:"pursue"},
+    {t:"斗嘴时知道对方哪句是玩笑", d:"bicker"},
+    {t:"日常起居的舒服配合", d:"stream"}
+  ]},
+  {q:"你对两个人社交的想象？", options:[
+    {t:"浪漫约会、只属于彼此", d:"fairy"},
+    {t:"共同打拼、积累人脉资源", d:"partner"},
+    {t:"深度交流、圈子也很合拍", d:"soulmate"},
+    {t:"共同的老朋友和旧回忆", d:"childhood"}
+  ]},
+  {q:"你最想要的恋爱体验是？", options:[
+    {t:"被人坚定选择、双向奔赴", d:"pursue"},
+    {t:"打打闹闹、轻松有趣", d:"bicker"},
+    {t:"安稳踏实、有人相伴", d:"stream"},
+    {t:"浪漫甜蜜、被当成主角", d:"fairy"}
+  ]},
+  {q:"你理想中的生活分工？", options:[
+    {t:"互相扶持、各自事业并进", d:"partner"},
+    {t:"懂彼此内心、精神上并肩", d:"soulmate"},
+    {t:"熟门熟路、像多年夫妻", d:"childhood"},
+    {t:"热情张罗、约会恋爱都主动", d:"pursue"}
+  ]},
+  {q:"你向往的心动瞬间是？", options:[
+    {t:"斗嘴时对方突然护着自己", d:"bicker"},
+    {t:"平淡日常里被温柔照顾到", d:"stream"},
+    {t:"精心布置的浪漫场面", d:"fairy"},
+    {t:"和对方一起达成目标的时刻", d:"partner"}
+  ]},
+  {q:"你期待被怎样对待？", options:[
+    {t:"被灵魂读懂、少猜心", d:"soulmate"},
+    {t:"被当作老朋友一样信任", d:"childhood"},
+    {t:"被热烈追求、明确偏爱", d:"pursue"},
+    {t:"被欢喜冤家式地惦记", d:"bicker"}
+  ]},
+  {q:"你想象的低谷陪伴是？", options:[
+    {t:"一起扛事、共渡难关", d:"stream"},
+    {t:"制造惊喜、把人哄出低落", d:"fairy"},
+    {t:"并肩战斗、把困境变成动力", d:"partner"},
+    {t:"安静倾听、共情我的难处", d:"soulmate"}
+  ]},
+  {q:"你偏爱的感情表达是？", options:[
+    {t:"念旧长情、记得过往点滴", d:"childhood"},
+    {t:"主动热烈、说出来也做出来", d:"pursue"},
+    {t:"互怼式关心、不煽情", d:"bicker"},
+    {t:"日常行动、点滴里见真心", d:"stream"}
+  ]},
+  {q:"你希望恋爱里保留什么？", options:[
+    {t:"浪漫和心动的感觉", d:"fairy"},
+    {t:"各自成长的空间与目标", d:"partner"},
+    {t:"内心的坦诚与懂得", d:"soulmate"},
+    {t:"相识多年的熟稔与信任", d:"childhood"}
+  ]},
+  {q:"你最向往的剧情桥段是？", options:[
+    {t:"多年后重逢、旧情复燃", d:"childhood"},
+    {t:"双向告白、互相奔赴", d:"pursue"},
+    {t:"误会解开、欢喜冤家牵手", d:"bicker"},
+    {t:"平凡夫妻的温情日常", d:"stream"}
+  ]},
+  {q:"你理想中的彼此成长？", options:[
+    {t:"童话般被宠着、不必长大", d:"fairy"},
+    {t:"事业生活一起升级打怪", d:"partner"},
+    {t:"精神上互相滋养、越走越深", d:"soulmate"},
+    {t:"从青涩一路陪伴到成熟", d:"childhood"}
+  ]},
+  {q:"你对平淡期的态度？", options:[
+    {t:"吵吵架、给关系添点趣味", d:"bicker"},
+    {t:"细水长流、平淡也踏实", d:"stream"},
+    {t:"用浪漫约会重新点燃心动", d:"fairy"},
+    {t:"一起定新目标、保持劲头", d:"partner"}
+  ]},
+  {q:"你期待的承诺形式？", options:[
+    {t:"多年情分、郑重许下未来", d:"childhood"},
+    {t:"双向确认、彼此主动约定", d:"pursue"},
+    {t:"拌嘴归拌嘴、认定不分开", d:"bicker"},
+    {t:"安稳过日子、白头偕老", d:"stream"}
+  ]},
+  {q:"你想象融入彼此生活的方式？", options:[
+    {t:"浪漫见家长、仪式感十足", d:"fairy"},
+    {t:"携手打拼、被视作未来家人", d:"partner"},
+    {t:"精神上被对方家人理解接纳", d:"soulmate"},
+    {t:"老朋友早就认识、熟门熟路", d:"childhood"}
+  ]},
+  {q:"你最容易被哪种恋爱故事打动？", options:[
+    {t:"双向奔赴、爱得热烈", d:"pursue"},
+    {t:"欢喜冤家、越吵越亲", d:"bicker"},
+    {t:"岁月静好、温情陪伴", d:"stream"},
+    {t:"梦幻浪漫、甜度很高", d:"fairy"}
+  ]},
+  {q:"你理想中的感情安全感？", options:[
+    {t:"一起奋斗、未来有奔头", d:"partner"},
+    {t:"被懂得、内心有共鸣", d:"soulmate"},
+    {t:"知根知底、不会走散", d:"childhood"},
+    {t:"双向主动、确定被爱着", d:"pursue"}
+  ]},
+  {q:"你希望两个人怎么处理分歧？", options:[
+    {t:"斗嘴归斗嘴、不记隔夜仇", d:"bicker"},
+    {t:"各让一步、回到日常温情", d:"stream"},
+    {t:"用浪漫和好、重归甜蜜", d:"fairy"},
+    {t:"就事论事、一起解决问题", d:"partner"}
+  ]},
+  {q:"你向往的恋爱仪式感？", options:[
+    {t:"灵魂深处的坦诚交流", d:"soulmate"},
+    {t:"保留当年相识的老传统", d:"childhood"},
+    {t:"主动准备、双向的仪式感", d:"pursue"},
+    {t:"互怼生日、不煽情却暖心", d:"bicker"}
+  ]},
+  {q:"你骨子里期待的关系模式？", options:[
+    {t:"安稳相伴、日子温情", d:"stream"},
+    {t:"浪漫梦幻、一直心动", d:"fairy"},
+    {t:"并肩成长、共同打拼", d:"partner"},
+    {t:"知己相依、精神共鸣", d:"soulmate"}
+  ]},
+  {q:"剥去现实条件，你最想要的恋爱剧本？", options:[
+    {t:"青梅竹马、从一而终的旧情", d:"childhood"},
+    {t:"双向奔赴、热烈相爱的篇章", d:"pursue"},
+    {t:"欢喜冤家、吵不散的情缘", d:"bicker"},
+    {t:"细水长流、安稳相伴的日常", d:"stream"}
+  ]}
+];
+
+const PERSONAS = {
+  childhood:{
+    name:"青梅竹马型", title:"旧情长伴者", avatar:"梅",
+    traits:["相识已久","知根知底","细水长情","信任深厚"],
+    reason:"你向往一段从熟人慢慢变恋人的感情，看重长久积累的信任和默契，喜欢知根知底、不用重新试探的相处。你的剧本里，感情随时间慢慢发酵，安稳又长情。",
+    scenes:["重温旧地的约会","从小养成的共同习惯","老朋友式的彼此信任","多年后牵手的情节"],
+    careers:["长情陪伴角色","旧识变恋人的缘分","慢热相知的恋爱搭档"],
+    hidden:"避雷提示：别因为太熟就忽略浪漫表达，长久关系也需要偶尔的心动和仪式感。",
+    egg:"彩蛋：你最喜欢的恋爱桥段，是“原来你一直都在”。",
+    quote:"“最好的爱情，是从年少走到白头。”",
+    banner:"linear-gradient(160deg,#8fb89a,#5f8a6a)"
+  },
+  pursue:{
+    name:"双向奔赴型", title:"热烈追爱者", avatar:"奔",
+    traits:["双向主动","热情热烈","彼此追求","情绪高涨"],
+    reason:"你期待两个人都愿意主动靠近、互相奔赴的恋爱，喜欢热烈直白、情绪高涨的相处。你的剧本里，爱意被大声说出口，你进一步、对方也进一步，爱得痛快又有回应。",
+    scenes:["双向告白的场面","主动准备的约会","彼此热烈的互动","一起奔赴未来的情节"],
+    careers:["热情主动角色","双向奔赴的缘分","愿意付出的恋爱搭档"],
+    hidden:"避雷提示：别把热情只放在追求期，确定关系后仍需维持日常的沟通和回应。",
+    egg:"彩蛋：你认定一个人时，会忍不住主动找话题。",
+    quote:"“爱要双向奔赴，单方面的坚持不算数。”",
+    banner:"linear-gradient(160deg,#d98a8a,#b96060)"
+  },
+  bicker:{
+    name:"欢喜冤家型", title:"斗嘴知心人", avatar:"欢",
+    traits:["互怼有趣","不打不成交","越吵越亲","热闹鲜活"],
+    reason:"你喜欢相处时轻松有趣、互相斗嘴拌架的关系，嘴上不饶人、心里却很在意。你的剧本里，两个人从互怼开始，吵不散、骂不走，在热闹里越处越亲，是欢喜冤家式的情缘。",
+    scenes:["互相抬杠的日常","斗嘴式关心","误会解开的桥段","吵完又和好的情节"],
+    careers:["互怼欢喜角色","热闹有趣的缘分","不打不成交的恋爱搭档"],
+    hidden:"避雷提示：斗嘴要分场合和分寸，别把玩笑变成伤人的话，真正的分歧仍需认真沟通。",
+    egg:"彩蛋：你嘴上嫌弃的人，往往最容易被你记住。",
+    quote:"“吵归吵，身边那个人还得是你。”",
+    banner:"linear-gradient(160deg,#d9a45f,#b87f3a)"
+  },
+  stream:{
+    name:"细水长流型", title:"安稳陪伴者", avatar:"水",
+    traits:["安稳舒缓","日常温情","踏实相伴","平淡知足"],
+    reason:"你向往安稳家常、细水长流的感情，不追求轰轰烈烈，看重日常陪伴和彼此照顾。你的剧本里，两个人一起做饭收拾、把小家经营好，在平淡日子里温情不断，踏实又安心。",
+    scenes:["居家日常的陪伴","一起打理生活","平淡温馨的约会","长久安稳的相处"],
+    careers:["安稳顾家角色","日常陪伴的缘分","踏实经营的恋爱搭档"],
+    hidden:"避雷提示：别让平淡变成忽视，细水长流的关系也要记得表达感谢和关心。",
+    egg:"彩蛋：你最想要的浪漫，是有人一起吃很多顿家常饭。",
+    quote:"“日子慢慢过，身边一直是你就好。”",
+    banner:"linear-gradient(160deg,#6f9eb0,#48788a)"
+  },
+  fairy:{
+    name:"浪漫童话型", title:"心动造梦者", avatar:"梦",
+    traits:["浪漫梦幻","注重仪式","心动甜蜜","氛围动人"],
+    reason:"你骨子里向往童话般浪漫的恋爱，被仪式感、惊喜和心动氛围打动，希望自己在感情里被宠成主角。你的剧本里处处是浪漫桥段，甜度拉满，一直保有梦幻和心动。",
+    scenes:["精心布置的约会","隆重的纪念仪式","浪漫惊喜的桥段","被宠溺的甜蜜日常"],
+    careers:["浪漫氛围角色","仪式感十足的缘分","多情细腻的恋爱搭档"],
+    hidden:"避雷提示：别只沉迷浪漫表象，童话之外的责任和日常经营同样不能少。",
+    egg:"彩蛋：一个有仪式感的小举动，就能让你记很久。",
+    quote:"“我的爱情里，得有光、有花、有心动。”",
+    banner:"linear-gradient(160deg,#c98fb0,#8a6286)"
+  },
+  partner:{
+    name:"并肩打拼型", title:"共同成长者", avatar:"拼",
+    traits:["互相扶持","共同成长","目标一致","务实上进"],
+    reason:"你期待一段两个人并肩打拼、一起变更好的感情，看重现实分担和共同目标。你的剧本里，恋爱和事业生活同步升级，两个人互相扶持、朝着未来一起努力，是并肩同行的搭档。",
+    scenes:["合作完成目标的时刻","互相扶持的低谷期","共同规划未来的约会","事业生活并进的日常"],
+    careers:["并肩搭档角色","共同成长的缘分","务实上进的恋爱搭档"],
+    hidden:"避雷提示：别只顾着往前冲，打拼之余也要留出时间陪伴和感受彼此。",
+    egg:"彩蛋：你喜欢的人，得是能和你一起扛事的那种。",
+    quote:"“爱情最好的样子，是我们一起往上走。”",
+    banner:"linear-gradient(160deg,#7d8fb0,#4f638a)"
+  },
+  soulmate:{
+    name:"灵魂伴侣型", title:"深度知己者", avatar:"契",
+    traits:["精神共鸣","心意相通","内心坦诚","深度懂得"],
+    reason:"你最看重精神层面的懂得和共鸣，希望对方能读懂你没说出口的想法。你的剧本里，两个人聊到深处、彼此理解，在精神上互相滋养，是心意相通、灵魂相依的知己式爱情。",
+    scenes:["深聊内心的夜晚","被读懂的默契瞬间","精神上互相支持的相处","一见如故的投缘对话"],
+    careers:["知己相依角色","精神共鸣的缘分","深度懂得的恋爱搭档"],
+    hidden:"避雷提示：灵魂契合也要落到现实沟通，再懂彼此也需要日常表达和经营。",
+    egg:"彩蛋：谁能接住你的深层情绪，你就最信任谁。",
+    quote:"“有人懂我，比被喜欢更让我安心。”",
+    banner:"linear-gradient(160deg,#9a8fc9,#6f63a0)"
+  }
+};
+
+let current = 0;
+let answers = new Array(QUESTIONS.length).fill(null);
+const $ = id => document.getElementById(id);
+
+function showView(name){
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  $(name).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function startQuiz(){ current=0; answers=new Array(QUESTIONS.length).fill(null); showView("quiz"); renderQ(false); }
+function renderQ(animate=true){
+  const q=QUESTIONS[current];
+  $("stepText").textContent=(current+1)+" / "+QUESTIONS.length;
+  $("barFill").style.width=(current/QUESTIONS.length*100)+"%";
+  $("qIndex").textContent="第 "+(current+1)+" 题";
+  $("qTitle").textContent=q.q;
+  const box=$("opts"); box.innerHTML="";
+  const letters=["A","B","C","D"];
+  q.options.forEach((op,i)=>{
+    const div=document.createElement("div");
+    div.className="opt"+(answers[current]===i?" selected":"");
+    div.innerHTML=`<div class="badge">${letters[i]}</div><div class="txt">${op.t}</div>`;
+    div.onclick=()=>selectOption(i);
+    box.appendChild(div);
+  });
+  $("btnNext").textContent=current===QUESTIONS.length-1?"查看结果":"下一题";
+  $("btnBack").style.visibility=current===0?"hidden":"visible";
+  if(animate){const card=$("qCard");card.classList.remove("enter");void card.offsetWidth;card.classList.add("enter");}
+}
+function selectOption(i){ answers[current]=i; [...$("opts").children].forEach((el,idx)=>el.classList.toggle("selected",idx===i)); }
+function nextQ(){
+  if(answers[current]===null){ $("qCard").animate([{transform:"translateX(0)"},{transform:"translateX(-8px)"},{transform:"translateX(8px)"},{transform:"translateX(0)"}],{duration:300}); return; }
+  if(current<QUESTIONS.length-1){current++;renderQ();}else{finish();}
+}
+function prevQ(){ if(current>0){current--;renderQ();} }
+
+function calcScores(){
+  const scores={}; Object.keys(DIMS).forEach(k=>scores[k]=0);
+  answers.forEach((ans,qi)=>{ if(ans===null)return; scores[QUESTIONS[qi].options[ans].d]+=3; });
+  return scores;
+}
+function pickPersona(scores){ const order=Object.keys(PERSONAS);let best=order[0]; order.forEach(k=>{if(scores[k]>scores[best])best=k;}); return best; }
+function finish(){ const scores=calcScores(); renderResult(pickPersona(scores),scores); showView("result"); }
+function renderResult(key,scores){
+  const p=PERSONAS[key]; const max=Math.max(1,...Object.values(scores));
+  const bars=Object.keys(DIMS).map(k=>{const w=Math.round(scores[k]/max*100);return `<div class="bar-row"><div class="bl">${DIMS[k].label}</div><div class="bt"><i style="width:${w}%"></i></div><div class="bv">${scores[k]}</div></div>`;}).join("");
+  $("resultCard").innerHTML=`
+    <div class="result-banner" style="background:${p.banner}">
+      <div class="r-avatar">${p.avatar}</div>
+      <div class="r-kicker">你 的 理 想 恋 爱 剧 本</div>
+      <div class="r-name">${p.name}</div>
+      <div class="r-cat">${p.title} · 与你高度契合</div>
+    </div>
+    <div class="r-quote">${p.quote}</div>
+    <div class="r-body">
+      <div class="r-block"><h3>剧本画像</h3><div class="trait-list">${p.traits.map(t=>`<span>${t}</span>`).join("")}</div></div>
+      <div class="r-block"><h3>剧本设定与走向</h3><p>${p.reason}</p></div>
+      <div class="r-block"><h3>高甜场景</h3><div class="trait-list">${p.scenes.map(t=>`<span>${t}</span>`).join("")}</div></div>
+      <div class="r-block"><h3>角色分工参考</h3><div class="trait-list">${p.careers.map(t=>`<span>${t}</span>`).join("")}</div><p class="r-note">* 剧本类型仅为趣味想象，不构成真实择偶标准。</p></div>
+      <div class="r-block"><h3>避雷提示</h3><p>${p.hidden}</p></div>
+      <div class="r-block"><h3>趣味彩蛋</h3><div class="egg">${p.egg}</div></div>
+      <div class="r-block"><h3>你的七维画像</h3><div class="bars">${bars}</div></div>
+    </div>`;
+}
+function restart(){ showView("home"); }
+if(QUESTIONS.length!==40) console.warn("题目数量为 "+QUESTIONS.length+"，预期 40");
+</script>
+</body>
+</html>
